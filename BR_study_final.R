@@ -1,34 +1,12 @@
 install.packages("readxl")
 library(readxl)
 library(ggplot2)
+library(ggpubr)
+
 getwd()
 setwd("C:/users/zahid/onedrive/desktop/dengue/biting rate/plosNTD")
 df=read_excel("S4 Table.xlsx")
-#df$Mean_biting <- as.numeric(df$Mean_biting)
-#df$Temperature <- as.numeric(df$Temperature)
-#df$`Rainfall(mm/day)` <- as.numeric(df$`Rainfall(mm/day)`)
-#df$Hours <- as.numeric(df$Hours)
 
-##########################################################################
-################ Captain Esoah: hourly biting (2015 vs 2016) ################
-##########################################################################
-
-captain_hourly_2015<-df[which(df$`Temporality(military_time)`!="-" & df$Study=="Captain-Esoah et al." & df$Year == 2015),]
-captain_hourly_2016<-df[which(df$`Temporality(military_time)`!="-" & df$Study=="Captain-Esoah et al." & df$Year == 2016),]
-captain_both<-rbind(captain_hourly_2015, captain_hourly_2016)
-
-ggplot(captain_both)+
-  geom_bar(aes(x=`Temporality(military_time)`, y=Mean_biting, fill=Year), width=.7, position="dodge", stat="identity") +
-  xlab("hours of day") + ylab("female Ae. aegypti/person-hour") +
-  scale_fill_manual(labels = c("2015", "2016"), values = c("bisque3", "coral3"))+
-  theme_classic()+
-  theme(axis.text=element_text(angle=90, size = 8)) +
-  theme(panel.border=element_rect(fill=NA), aspect.ratio = .75)+
-  theme(legend.direction = "vertical")+
-  theme(legend.position = c(0.2,0.8))+
-  theme(legend.title = element_blank()) # To remove legend title +
-
-ggsave(file="Fig_Captain_2015_vs_2016.png", width = 3, height = 3)
 
 #############################################################################
 ############### Chompoosri et al: Hourly bitning across seasons #################
@@ -39,7 +17,7 @@ chompoosri_hourly_summer<-chompoosri_hourly3[which(chompoosri_hourly3$Season=="S
 chompoosri_hourly_rainy<-chompoosri_hourly3[which(chompoosri_hourly3$Season=="Rainy"),]
 chompoosri_hourly_winter<-chompoosri_hourly3[which(chompoosri_hourly3$Season=="Winter"),]
 
-ggplot()+
+p1=ggplot()+
   geom_line(aes(x=chompoosri_hourly_summer$`Temporality(military_time)`,y=chompoosri_hourly_summer$Mean_biting, color="a", group=1),linetype="dashed")+
   geom_point(aes(x=chompoosri_hourly_summer$`Temporality(military_time)`,y=chompoosri_hourly_summer$Mean_biting, color="a"),size=1)+
   geom_line(aes(x=chompoosri_hourly_rainy$`Temporality(military_time)`,y=chompoosri_hourly_rainy$Mean_biting, color="b", group=1),linetype="solid")+
@@ -50,13 +28,35 @@ ggplot()+
   scale_color_manual(guide= guide_legend(""), labels = c("Summer", "Rainy","Winter"),values=c("bisque3","coral3","black"))+
   theme_classic()+
   theme(axis.text=element_text(angle=90, size=8))+
+  theme(axis.title=element_text(size=9)) +
   theme(panel.border=element_rect(fill=NA), aspect.ratio = .75)+
   theme(legend.direction = "vertical") + 
-  theme(legend.position=c(0.81,0.77))+
-  theme(legend.text=element_text(size=7.7))+
+  theme(legend.position=c(0.81,0.766))+
+  theme(legend.text=element_text(size=7.65))+
   theme(legend.title = element_blank()) # To remove legend title
   
-ggsave(file="Fig_Chompoosri_seasons_New.png", width = 3.3, height = 3.3)
+##########################################################################
+################ Captain Esoah: hourly biting (2015 vs 2016) ################
+##########################################################################
+
+captain_hourly_2015<-df[which(df$`Temporality(military_time)`!="-" & df$Study=="Captain-Esoah et al." & df$Year == 2015),]
+captain_hourly_2016<-df[which(df$`Temporality(military_time)`!="-" & df$Study=="Captain-Esoah et al." & df$Year == 2016),]
+captain_both<-rbind(captain_hourly_2015, captain_hourly_2016)
+
+p2=ggplot(captain_both)+
+  geom_bar(aes(x=`Temporality(military_time)`, y=Mean_biting, fill=Year), width=.7, position="dodge", stat="identity") +
+  xlab("hours of day") + ylab("female Ae. aegypti/person-hour") +
+  scale_fill_manual(labels = c("2015", "2016"), values = c("bisque3", "coral3"))+
+  theme_classic()+
+  theme(axis.text=element_text(angle=90, size = 8)) +
+  theme(axis.title=element_text(size=9)) +
+  theme(panel.border=element_rect(fill=NA), aspect.ratio = .75)+
+  theme(legend.direction = "vertical")+
+  theme(legend.position = c(0.2,0.8))+
+  theme(legend.title = element_blank()) # To remove legend title +
+
+ggarrange(p1, p2, nrow=1, ncol=2, labels="auto")
+ggsave(file="Fig2_hourly_bitings.tiff", width = 6.5, height = 3.2)
 
 ##############################################################################
 ################# Karch et al.: Indoor VS outdoor ############################
@@ -81,7 +81,7 @@ ggplot() +
   theme(legend.direction = "horizontal")+
   theme(legend.text = element_text(size=9))
 
-ggsave(file="Fig_Karch_indoor_outdoor.png", width =3.2 , height = 3.2)   
+ggsave(file="Fig3_Karch_indoor_outdoor.tiff", width =3.2 , height = 3.2)   
 
 #############################################################
 ############### Effect of Temperature & Rainfall ############
