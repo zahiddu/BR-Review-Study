@@ -109,7 +109,8 @@ p4=ggplot(karch_rainfall_temperature_outdoor, aes(`Rainfall(mm/day)`, Temperatur
   labs(x="Rainfall (mm/day)",y="Temperature (C)")+
   xlim(0,16.1)+ ylim(18,30)
 
-ggarrange(p3, p4, nrow=1, ncol=2, labels="auto")
+p3_and_p4=ggarrange(p3, p4, nrow=1, ncol=2, labels="auto")
+annotate_figure(p3_and_p4, top = text_grob("Karch et al. (a) Indoor and (b) Outdoor", face = "bold"))
 ggsave(file="Fig_S1_rain_temp_Karch.tiff", width = 6.5, height = 5)
 
 ########### Captain-Esoah et al.: Temperature and Rainfall ####################
@@ -136,7 +137,8 @@ p6=ggplot(captain_rainfall_temp_2016, aes(`Rainfall(mm/day)`, Temperature,  colo
   ylim(22.5,32.2) +
   labs(x="Rainfall (mm/day)",y="Temperature (C)")
 
-ggarrange(p5, p6, nrow=1, ncol=2, labels="auto")
+p5_and_p6=ggarrange(p5, p6, nrow=1, ncol=2, labels="auto")
+annotate_figure(p5_and_p6, top = text_grob("Captain-Esoah et al. (a) 2015 and (b) 2016", face = "bold"))
 ggsave(file="Fig_S2_rain_temp_Captain_Esoah.tiff", width = 6.5, height = 5)
 
 ########### Salas et al.: Temperature and Rainfall #####################
