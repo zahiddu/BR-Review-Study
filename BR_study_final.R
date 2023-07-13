@@ -93,23 +93,51 @@ karch_rainfall_temperature_indoor<-df[which(df$Study=="Karch et al." & df$Locati
 karch_rainfall_temperature_indoor$Temperature <- as.numeric(karch_rainfall_temperature_indoor$Temperature)
 karch_rainfall_temperature_indoor$`Rainfall(mm/day)` <- as.numeric(karch_rainfall_temperature_indoor$`Rainfall(mm/day)`)
 
-ggplot(karch_rainfall_temperature_indoor, aes(`Rainfall(mm/day)`, Temperature,  color=Mean_biting)) + 
+p3=ggplot(karch_rainfall_temperature_indoor, aes(`Rainfall(mm/day)`, Temperature,  color=Mean_biting)) + 
   geom_point() + 
   scale_color_gradient(name = "Mean biting", low="bisque3", high="coral3") + 
   labs(x="Rainfall (mm/day)",y="Temperature (C)")+
   xlim(0,16.1)+ ylim(18,30)
-ggsave(file="Fig_Karch_indoor_temp_rain.png", width = 2.5, height = 2.5) 
 
 karch_rainfall_temperature_outdoor<-df[which(df$Study=="Karch et al." & df$Location=="Outdoor"),c(1,2,9,11)]
 karch_rainfall_temperature_outdoor$Temperature <- as.numeric(karch_rainfall_temperature_outdoor$Temperature)
 karch_rainfall_temperature_outdoor$`Rainfall(mm/day)` <- as.numeric(karch_rainfall_temperature_outdoor$`Rainfall(mm/day)`)
 
-ggplot(karch_rainfall_temperature_outdoor, aes(`Rainfall(mm/day)`, Temperature,  color=Mean_biting)) + 
+p4=ggplot(karch_rainfall_temperature_outdoor, aes(`Rainfall(mm/day)`, Temperature,  color=Mean_biting)) + 
   geom_point() + 
   scale_color_gradient(name = "Mean biting", low="bisque3", high="coral3") + 
   labs(x="Rainfall (mm/day)",y="Temperature (C)")+
   xlim(0,16.1)+ ylim(18,30)
-ggsave(file="Fig_Karch_outdoor_temp_rain.png", width = 2.5, height = 2.5) 
+
+ggarrange(p3, p4, nrow=1, ncol=2, labels="auto")
+ggsave(file="Fig_S1_rain_temp_Karch.tiff", width = 6.5, height = 5)
+
+########### Captain-Esoah et al.: Temperature and Rainfall ####################
+
+captain_rainfall_temp_2015<-df[which(df$Study=="Captain-Esoah et al." & df$Year == 2015 & df$Rainfall_source == "S1 Table"), c(1,2,8,9,11)]
+captain_rainfall_temp_2015$Temperature <- as.numeric(captain_rainfall_temp_2015$Temperature)
+captain_rainfall_temp_2015$`Rainfall(mm/day)` <- as.numeric(captain_rainfall_temp_2015$`Rainfall(mm/day)`)
+
+p5=ggplot(captain_rainfall_temp_2015, aes(`Rainfall(mm/day)`, Temperature,  color=Mean_biting)) + 
+  geom_point() + 
+  scale_color_gradient(name = "Mean biting", low="bisque3", high="coral3") + 
+  scale_x_continuous(breaks=c(0,3,6,9))+
+  ylim(22.5,32.2) +
+  labs(x="Rainfall (mm/day)",y="Temperature (C)")
+
+captain_rainfall_temp_2016<-df[which(df$Study=="Captain-Esoah et al." & df$Year == 2016 & df$Rainfall_source == "S1 Table"), c(1,2,8,9,11)]
+captain_rainfall_temp_2016$Temperature <- as.numeric(captain_rainfall_temp_2016$Temperature)
+captain_rainfall_temp_2016$`Rainfall(mm/day)` <- as.numeric(captain_rainfall_temp_2016$`Rainfall(mm/day)`)
+
+p6=ggplot(captain_rainfall_temp_2016, aes(`Rainfall(mm/day)`, Temperature,  color=Mean_biting)) + 
+  geom_point() + 
+  scale_color_gradient(name = "Mean biting", low="bisque3", high="coral3") + 
+  scale_x_continuous(breaks=c(0,2,4,6,8,9))+
+  ylim(22.5,32.2) +
+  labs(x="Rainfall (mm/day)",y="Temperature (C)")
+
+ggarrange(p5, p6, nrow=1, ncol=2, labels="auto")
+ggsave(file="Fig_S2_rain_temp_Captain_Esoah.tiff", width = 6.5, height = 5)
 
 ########### Salas et al.: Temperature and Rainfall #####################
 
@@ -123,31 +151,5 @@ ggplot(salas_rainfall_temperature, aes(`Rainfall(mm/day)`, Temperature,  color=M
   labs(x="Rainfall (mm/day)",y="Temperature (C)")+
   xlim(0,16.1)+ ylim(18,30)
 
-ggsave(file="Fig_Salas_temp_rain.png", width = 2.5, height = 2.5) 
-
-########### Captain-Esoah et al.: Temperature and Rainfall ####################
-
-captain_rainfall_temp_2015<-df[which(df$Study=="Captain-Esoah et al." & df$Year == 2015 & df$Rainfall_source == "S1 Table"), c(1,2,8,9,11)]
-captain_rainfall_temp_2015$Temperature <- as.numeric(captain_rainfall_temp_2015$Temperature)
-captain_rainfall_temp_2015$`Rainfall(mm/day)` <- as.numeric(captain_rainfall_temp_2015$`Rainfall(mm/day)`)
-ggplot(captain_rainfall_temp_2015, aes(`Rainfall(mm/day)`, Temperature,  color=Mean_biting)) + 
-  geom_point() + 
-  scale_color_gradient(name = "Mean biting", low="bisque3", high="coral3") + 
-  scale_x_continuous(breaks=c(0,3,6,9))+
-  ylim(22.5,32.2) +
-  labs(x="Rainfall (mm/day)",y="Temperature (C)")
-
-ggsave(file="Fig_Captain_temp_rain_2015.png", width = 2.5, height = 2.5) 
-
-captain_rainfall_temp_2016<-df[which(df$Study=="Captain-Esoah et al." & df$Year == 2016 & df$Rainfall_source == "S1 Table"), c(1,2,8,9,11)]
-captain_rainfall_temp_2016$Temperature <- as.numeric(captain_rainfall_temp_2016$Temperature)
-captain_rainfall_temp_2016$`Rainfall(mm/day)` <- as.numeric(captain_rainfall_temp_2016$`Rainfall(mm/day)`)
-ggplot(captain_rainfall_temp_2016, aes(`Rainfall(mm/day)`, Temperature,  color=Mean_biting)) + 
-  geom_point() + 
-  scale_color_gradient(name = "Mean biting", low="bisque3", high="coral3") + 
-  scale_x_continuous(breaks=c(0,2,4,6,8,9))+
-  ylim(22.5,32.2) +
-  labs(x="Rainfall (mm/day)",y="Temperature (C)")
-
-ggsave(file="Fig_Captain_temp_rain_2016.png", width = 2.5, height = 2.5) 
+ggsave(file="Fig_S3_temp_rain_Salas.png", width = 2.5, height = 2.5) 
 
